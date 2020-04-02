@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title> Weather Buddy</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+   <ion-fab vertical="top" horizontal="end" edge slot="fixed">
+      <ion-fab-button (click)="addCity()">
+         <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+   </ion-fab>
+
+   <div class="placeholder-info" text-center *ngIf="entries.length ==0">
+
+   </div>
+   <ion-slides #slides (ionSlideWillChange)="cityChanged()" pager="true" class="page-slide">
+      <ion-slide *ngFor="let place of entries; let i = index;" [ngClass]="place.class">
+
+         <div *ngIf="place.weather">
+            <h3 text-center> {{ place.weather.name }}</h3>
+            <p text-center text-capilatize> {{ place.weather.weather[0]?.description }} </p>
+            <h2 text-center tappable (click)="changeUnits()"> {{place.weather.main.temp.toFixed() }} {{ getUnitsString() }} </h2>
+            <ion-row class="ion-justify-content-center">
+               <ion-col size="3">
+                  <img [src]="getWeatherIcon(place.weather.weather[0]?.icon)" alt="">
+               </ion-col>
+            </ion-row>
+            <ion-list inset="true" lines="inset">
+               <ion-item>
+                  <ion-icon name="sunny" slot="start"></ion-icon>
+                     <ion-label>
+                        Sunrise
+                     </ion-label>
+                     <p slot="end"> {{ place.weather.sys.sunrise*1000 | date: 'h:mm a' }} </p>
+               </ion-item>
+               <ion-item>
+                  <ion-icon name="moon" slot="start"></ion-icon>
+                     <ion-label>
+                        Sunset
+                     </ion-label>
+                     <p slot="end"> {{ place.weather.sys.sunset*1000 | date: 'h:mm a' }} </p>
+               </ion-item>
+               <ion-item>
+                  <ion-icon name="moon" slot="start"></ion-icon>
+                     <ion-label>
+                        Humidity
+                     </ion-label>
+                     <p slot="end"> {{ place.weather.main.humidity }} </p>
+               </ion-item>
+               <ion-item>
+                  <ion-icon name="flag" slot="start"></ion-icon>
+                     <ion-label>
+                        Wind
+                     </ion-label>
+                     <p slot="end"> {{ place.weather.wind.speed }} m/s </p>
+                  
+               </ion-item>
+            </ion-list>
+         </div>
+
+         <ion-slides [options]="sliderConfig" *ngIf="place.forecast" class="forecast">
+            <ion-slide *ngFor="let fc of place.forecast?.list" text-center>
+               <app-hour-block [data]="fc"  [units]="units" text-center></app-hour-block>
+            </ion-slide>
+         </ion-slides>
+
+         <!-- <ion-slides [options]="sliderConfig" *ngIf="place.forecast" class="forecast">
+            <ion-slide *ngFor="let fc of place.forecast?.list" text-center>
+                  {{ fc.dt*1000 | date: 'MM/dd' }} <br>
+                  {{ fc.dt*1000 | date: 'hh a' }} <br>
+                  <img [src]="getWeatherIcon(fc.weather[0]?.icon)">
+                  {{ fc.main.temp.toFixed() }} {{ getUnitsString() }} 
+               <app-hour-block [data]="fc"  [units]="units" text-center></app-hour-block>
+            </ion-slide>
+         </ion-slides> -->
+
+         <ion-list inset="true" lines="inset" *ngIf="place.forecast">
+            <ion-item *ngFor="let day of place.nextDays">
+               <ion-label>
+                  {{ day.date | date: 'EEEE'}}
+               </ion-label>
+               <span>
+                  {{ day.max }}
+                  <p class='temp-min'> {{ day.min }}</p>
+               </span>
+            </ion-item>
+         </ion-list>
+         <ion-button text-center fill="outline" color="danger" (click)="removeCity(i)" [disabled]="i == 0">
+            <ion-icon name="trash" slot="start"></ion-icon>
+            Remove City
+         </ion-button>
+        
+      </ion-slide>
+
+   </ion-slides>
+
+</ion-content>

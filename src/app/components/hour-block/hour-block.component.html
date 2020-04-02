@@ -1,0 +1,5 @@
+
+{{ data.dt*1000 | date: 'MM/dd' }} <br>
+{{ data.dt*1000 | date: 'hh a' }} <br>
+<img [src]="getWeatherIcon(data.weather[0]?.icon)"><br>
+{{ data.main.temp.toFixed() }} {{ getUnitsString() }} 

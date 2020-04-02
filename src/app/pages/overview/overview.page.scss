@@ -1,0 +1,47 @@
+.weather {
+   width: 100%;
+}
+
+.forecast {
+   height: 25vh;
+
+   padding-bottom: 10px;
+   padding-top: 10px;
+
+   border-top: 1px solid #fff;
+   border-bottom: 1px solid #fff;
+}
+
+.swiper-slide {
+   display: initial;
+}
+
+.temp-min {
+   color: var(--ion-color-medium);
+   display: inline-block;
+   margin-left: 15px;
+}
+
+.cold {
+   background: #b1dcff;
+}
+
+.medium {
+   background: #aaddbb;
+}
+
+.warm {
+   background: #ec9357;
+}
+
+.list {
+   background: rgba(255, 255, 255, 0.53);
+}
+
+.page-slide {
+   --bullet-background: #fff;
+
+   ion-slide {
+       padding-bottom: 50px;
+   }
+}
